@@ -12,7 +12,6 @@ export const Navbar = () => {
   }, []);
 
   const isDarkMode = useDarkSide();
-
   return (
     <div className='bg-blue/80 h-fit w-full text-xl rounded-xl shadow-md dark:bg-otherWhite/20'>
         <ul className='flex justify-between px-10 py-5'>
