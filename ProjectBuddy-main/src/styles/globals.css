@@ -10,7 +10,10 @@
 
 body {
   font-family: 'Merriweather';
+  overflow-y: hidden;
 }
+
+
 
 .light-bg{
   background: radial-gradient(103.91% 64.53% at 16.25% 22.85%, #F5F7FA 0%, #C3CFE2 100%);
