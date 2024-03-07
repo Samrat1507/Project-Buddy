@@ -1,11 +1,11 @@
 import React from 'react';
-import { Navbar } from '../components/Navbar';
+import { ProtectedNav } from '../components/protectednav';
 
 const Dashboard = () => {
   return (
     <div className='"flex flex-col h-screen bg-gradient-to-br from-[#F5F7FA] to-[#C3CFE2] dark:bg-gradient-to-br dark:from-[#464647] dark:to-[#030913] px-5 py-5 gap-16 items-center"'>
       {/* Navbar */}
-      <Navbar />
+      <ProtectedNav />
 
       {/* Main Content */}
       <div className="flex flex-row h-screen bg-gradient-to-br from-[#F5F7FA] to-[#C3CFE2] dark:bg-gradient-to-br dark:from-[#464647] dark:to-[#030913]">
