@@ -15,6 +15,7 @@ const Login = () => {
                   type="text"
                   placeholder="Username"
               />
+              
               <div className='flex flex-col gap-1'>
                   <input className='bg-lightBlue shadow-md shadow-gray-500 dark:shadow-black/80 placeholder-black/60 px-5 py-1 rounded-md dark:bg-black/40 dark:placeholder-otherWhite/60'
                       type="password"
