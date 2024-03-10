@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Switcher from '../components/Switcher';
-import { ProtectedNav } from '../components/protectednav';
-import useDarkSide from '../../hooks/useDarkSide';
+import { Navbar } from '../components/Navbar';
 
 const Details = () => {
-  const isDarkMode = useDarkSide();
-
   const [formData, setFormData] = useState({
     username: '',
     description: '',
@@ -25,23 +22,30 @@ const Details = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate authentication (replace with actual authentication logic)
     try {
-      // Perform authentication process...
-      // If authentication is successful, redirect the user to /protected/dashboard
-      // For demonstration, we'll use a timeout to simulate authentication
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulating authentication delay
-      // Redirect the user to /protected/dashboard
-      window.location.href = '/protected/dashboard';
+      // Send user details to backend for saving to MongoDB
+      const response = await fetch('http://localhost:3000/api/mongodb/putUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        // Redirect to dashboard on successful submission
+        window.location.href = '/protected/dashboard';
+      } else {
+        console.error('Error saving user details:', response.statusText);
+      }
     } catch (error) {
-      console.error('Authentication failed:', error);
-      // Handle authentication failure (e.g., display error message)
+      console.error('Error saving user details:', error);
     }
   };
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-[#F5F7FA] to-[#C3CFE2] dark:bg-gradient-to-br dark:from-[#464647] dark:to-[#030913] px-5 py-5 gap-16 items-center">
-      <ProtectedNav />
+      <Navbar />
       <div className="bg-otherBlue rounded-xl p-10 w-1/2">
         <h1 className="text-4xl mb-5 text-center dark:text-otherWhite">User Details</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

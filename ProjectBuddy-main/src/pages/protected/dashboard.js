@@ -1,7 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from '../components/Navbar';
 
 const Dashboard = () => {
+  const [userData, setUserData] = useState({
+    username: '',
+    description: '',
+    country: '',
+    githubId: '',
+    linkedInId: ''
+  });
+
+  useEffect(() => {
+    // Fetch user details from getUser API
+    const fetchUserDetails = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/mongodb/getUser');
+        if (!response.ok) {
+          throw new Error('Failed to fetch user details');
+        }
+        const userData = await response.json();
+
+        // Assuming the data structure is an object with properties like username, description, etc.
+        setUserData(userData);
+
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    fetchUserDetails();
+  }, []); // Empty dependency array to execute the effect only once when the component mounts
+
   return (
     <div className="flex flex-col gap-5 h-screen bg-gradient-to-br from-[#F5F7FA] to-[#C3CFE2] dark:bg-gradient-to-br dark:from-[#464647] dark:to-[#030913] px-5 py-5">
       {/* Navbar */}
@@ -15,12 +44,12 @@ const Dashboard = () => {
           <img src="/profilePic.jpg" alt="Profile" className="w-20 h-20 rounded-md border-x-black"/>
           {/* User Info */}
           <div className="text-center mt-4">
-            <h2 className="text-lg font-semibold">John Doe</h2>
-            <p className="text-sm text-gray-500">@johndoe</p>
-            <p className="text-sm text-gray-500">Description</p>
-            <p className="text-sm text-gray-500">Country</p>
-            <p className="text-sm text-gray-500">GitHub ID</p>
-            <p className="text-sm text-gray-500">LinkedIn ID</p>
+            <h2 className="text-lg font-semibold">{userData.username}</h2>
+            <p className="text-sm text-gray-500">@{userData.username}</p>
+            <p className="text-sm text-gray-500">{userData.description}</p>
+            <p className="text-sm text-gray-500">{userData.country}</p>
+            <p className="text-sm text-gray-500">{userData.githubId}</p>
+            <p className="text-sm text-gray-500">{userData.linkedInId}</p>
           </div>
         </div>
 

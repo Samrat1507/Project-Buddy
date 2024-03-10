@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Switcher from './Switcher';
-import useDarkSide from '@/hooks/useDarkSide';
+import useDarkSide from '../../hooks/useDarkSide';
 import Link from 'next/link';
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 
