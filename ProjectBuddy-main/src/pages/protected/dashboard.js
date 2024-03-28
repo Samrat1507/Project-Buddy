@@ -8,7 +8,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch('/api/projects/getProjects');
+        const response = await fetch('/api/projects/getProject');
         if (!response.ok) {
           throw new Error('Failed to fetch projects');
         }
