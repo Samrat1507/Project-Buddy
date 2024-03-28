@@ -1,35 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Navbar } from '../components/Navbar';
 
 const Dashboard = () => {
-  const [userData, setUserData] = useState({
-    username: '',
-    description: '',
-    country: '',
-    githubId: '',
-    linkedInId: ''
-  });
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    // Fetch user details from getUser API
-    const fetchUserDetails = async () => {
+    const fetchProjects = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/mongodb/getUser');
+        const response = await fetch('/api/projects/getProjects');
         if (!response.ok) {
-          throw new Error('Failed to fetch user details');
+          throw new Error('Failed to fetch projects');
         }
-        const userData = await response.json();
-
-        // Assuming the data structure is an object with properties like username, description, etc.
-        setUserData(userData);
-
+        const projectsData = await response.json();
+        setProjects(projectsData);
       } catch (error) {
-        console.error('Error fetching user details:', error);
+        console.error('Error fetching projects:', error);
       }
     };
 
-    fetchUserDetails();
-  }, []); // Empty dependency array to execute the effect only once when the component mounts
+    fetchProjects();
+  }, []);
 
   return (
     <div className="flex flex-col gap-5 h-screen bg-gradient-to-br from-[#F5F7FA] to-[#C3CFE2] dark:bg-gradient-to-br dark:from-[#464647] dark:to-[#030913] px-5 py-5">
@@ -37,30 +28,17 @@ const Dashboard = () => {
       <Navbar />
 
       {/* Main Content */}
-      <div className="flex flex-row gap-5 h-screen ">
-        {/* Left Section */}
-        <div className="flex flex-col items-center  w-1/4 py-10 bg-lightBlue rounded-xl shadow-2xl shadow-gray-700">
-          {/* Profile Picture */}
-          <img src="/profilePic.jpg" alt="Profile" className="w-20 h-20 rounded-md border-x-black"/>
-          {/* User Info */}
-          <div className="text-center mt-4">
-            <h2 className="text-lg font-semibold">{userData.username}</h2>
-            <p className="text-sm text-gray-500">@{userData.username}</p>
-            <p className="text-sm text-gray-500">{userData.description}</p>
-            <p className="text-sm text-gray-500">{userData.country}</p>
-            <p className="text-sm text-gray-500">{userData.githubId}</p>
-            <p className="text-sm text-gray-500">{userData.linkedInId}</p>
-          </div>
-        </div>
-
+      <div className="flex flex-row gap-5 h-screen">
         {/* Right Section */}
         <div className="flex flex-col flex-grow bg-lightBlue rounded-xl shadow-2xl shadow-gray-700">
           {/* Options Section */}
           <div className="flex flex-row justify-around my-5">
             <button className="px-4 py-2 bg-blue-500 text-white rounded">Recent Projects</button>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded">Ongoing Projects</button>
             <button className="px-4 py-2 bg-blue-500 text-white rounded">Completed Projects</button>
             <button className="px-4 py-2 bg-blue-500 text-white rounded">Explore Projects</button>
+            <Link href="/createproject">
+              <button className="px-4 py-2 bg-blue-500 text-white rounded">Create a Project</button>
+            </Link>
           </div>
           
           {/* Search Section */}
@@ -73,15 +51,17 @@ const Dashboard = () => {
           <div className="overflow-y-auto">
             {/* Individual Project Cards */}
             <div className="flex flex-col gap-4 mx-5">
-              {/* Example Project Card */}
-              <div className="flex justify-between items-center bg-white p-4 rounded shadow">
-                <div>
-                  <h3 className="font-semibold">Project Name</h3>
-                  <p className="text-gray-500">Technologies Used</p>
+              {/* Mapping through projects to display each project */}
+              {projects.map(project => (
+                <div key={project._id} className="flex flex-col bg-white p-4 rounded shadow">
+                  <h3 className="font-semibold">{project.projectName}</h3>
+                  <p className="text-gray-500">{project.description}</p>
+                  <p className="text-gray-500">Technologies Used: {project.technologiesUsed}</p>
+                  <p className="text-gray-500">Created At: {new Date(project.createdAt).toLocaleString()}</p>
+                  {/* You can add more details as needed */}
+                  <button className="px-3 py-1 bg-blue-500 text-white rounded mt-2">Project History</button>
                 </div>
-                <button className="px-3 py-1 bg-blue-500 text-white rounded">Project History</button>
-              </div>
-              {/* Repeat this block for each project */}
+              ))}
             </div>
           </div>
         </div>
