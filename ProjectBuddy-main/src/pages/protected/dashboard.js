@@ -8,7 +8,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch('/api/projects/getProjects');
+        const response = await fetch('/api/projects/getProject');
         if (!response.ok) {
           throw new Error('Failed to fetch projects');
         }
@@ -48,7 +48,7 @@ const Dashboard = () => {
           </div>
           
           {/* Project List Section */}
-          <div className="overflow-y-auto">
+          <div className="overflow-y-auto" style={{ maxHeight: '70vh' }}> {/* Set a max height */}
             {/* Individual Project Cards */}
             <div className="flex flex-col gap-4 mx-5">
               {/* Mapping through projects to display each project */}
